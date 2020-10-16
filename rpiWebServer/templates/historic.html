@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      // Define the chart to be drawn.
+      var data = new google.visualization.DataTable();
+      data.addColumn('datetime', 'Time');
+      data.addColumn('number', 'Temperature');
+      data.addRows([
+	 {% for row in temp %}
+            [new Date({{row[0][0:4]}},{{row[0][5:7]}}-1,{{row[0][8:10]}},{{row[0][11:13]}},{{row[0][14:16]}}),{{'%0.2f'|format(row[1])}}],
+	 s{% endfor %}
+      ]);
+      
+      var options = {
+        width: 800,
+        height: 550,
+        hAxis: {
+          title: "Date",
+          gridlines: { count: {{temp_items}}, color: '#CCC' },
+          format: 'dd-MMM-yyyy HH:mm' },
+        vAxis: {
+          title: 'Degrees'
+        },
+        title: 'Temperature',
+        curveType: 'function'  //Makes line curved
+      };
+      
+      var chart = new google.visualization.LineChart(document.getElementById('chart_temps'));
+      
+      chart.draw(data, options);
+   }
+      
+  </script>
+</head>
+<body>
+  <!-- Identify where the chart should be drawn. -->
+  <div id="chart_temps" style="width: 600; height:300px;"></div>
+</body>
+</html>
