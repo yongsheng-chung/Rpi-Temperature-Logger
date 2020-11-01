@@ -24,7 +24,7 @@ def getLastData():
         temp = row[1]
     conn.close()
     return time, temp
-    
+
 # Retrieve a range of data
 def getHistData():
     conn = sqlite3.connect(database)
@@ -32,11 +32,11 @@ def getHistData():
     count = 0
     timeTemp = []
     # for row in curs.execute("SELECT * FROM temper_data ORDER BY timestamp DESC LIMIT " + str(numSamples)):
-    for row in curs.execute("SELECT * FROM temper_data"):
+    for row in curs.execute("SELECT * FROM temper_data ORDER BY timestamp DESC LIMIT 144"):
         timeTemp.append([row[0].format('YYYY-MM-DD HH:mm'), round(row[1], 2)])
         count += 1
     conn.close()
-    print(timeTemp)
+    print(type(timeTemp))
     return timeTemp, count
 
 # Retrieve a range of data using pandas
@@ -44,10 +44,12 @@ def getData():
     conn = sqlite3.connect(database)
     df = pd.read_sql_query("SELECT * FROM temper_data ORDER BY timestamp DESC LIMIT 144", conn)
     conn.close()
-    
+
     timestamp = df['timestamp'].values.tolist()
     temperatures = df['temp'].values.tolist()
-    
+    print(type(timestamp))
+    print(type(temperatures))
+
     return timestamp, temperatures
 
 # main route
@@ -59,19 +61,19 @@ def index():
         'temp': temp,
     }
     return render_template("index.html", **templateData)
-    
+
 # Historical data plotted google charts
-@app.route("/gcharts")
+@app.route("/googleCharts")
 def graph_google():
     timeTemp, count = getHistData()
-    return render_template("historic.html", temp = timeTemp, temp_items = count)
-    
+    return render_template("googleCharts.html", temp = timeTemp, temp_items = count)
+
 # Historical data plotted using Chartjs
 @app.route("/chartjs")
 def graph_chartjs():
     timestamp, temperatures = getData()
-    return render_template("graph_js.html", timestamp = timestamp, temperatures = temperatures)
-    
+    return render_template("chartjs.html", timestamp = timestamp, temperatures = temperatures)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
-    
+

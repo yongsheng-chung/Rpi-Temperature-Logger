@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+  <meta name="description" content="Rpi Temperature Logger">
+  <meta name="author" content="Yong Sheng Chung">
+  <title>Chartjs</title>
+  <!-- Mobile Specific Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=0.8">
+  <!-- FONT -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" integrity="sha512-5fsy+3xG8N/1PV5MIJz9ZsWpkltijBI48gBzQ/Z2eVATePGHOkMIn+xTDHIfTZFVb9GMpflF2wOWItqxAP2oLQ==" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@1.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+<body>
+  <div class="container">
+    <div class="eleven column" style="margin-top: 5%">
+      <canvas id="tempChart" style="display: block; width: 50%"></canvas>
+      <script>
+        var temp = {{ temperatures }};
+        var time = [];
+
+        {% for row in timestamp %}
+          time.push(new Date({{row[0:4]}},{{row[5:7]}}-1,{{row[8:10]}},{{row[11:13]}},{{row[14:16]}}))
+        {% endfor %};
+
+        console.log(time.length);
+        Chart.defaults.global.elements.point.radius = 1;
+
+        var ctx = document.getElementById('tempChart');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: time,
+                datasets: [{
+                    label: 'Temperature',
+                    fill: false,
+                    borderColor: "rgb(75, 192, 192)",
+                    lineTension: 0.1,
+                    data: temp,
+                }]
+            },
+            options: {
+              responsive: true,
+
+              scales: {
+                xAxes: [{
+                  type: 'time',
+                  time: {
+                    displayFormats: {
+                       'day': 'dd MMM YYYY HH:mm',
+                     }
+                  }
+                }]
+              }
+            }
+        });
+      </script>
+      <script>
+
+      </script>
+    </div>
+  </div>
+</body>
+
+</html>

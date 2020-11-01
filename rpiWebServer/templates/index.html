@@ -1,11 +1,11 @@
 <!DOCTYPE html>
    <head>
-      <meta name="description" content="Temp conditions - RPi">
+      <meta name="description" content="Rpi Temperature Logger">
       <meta name="author" content="Yong Sheng Chung">
       <meta http-equiv="refresh" content="600">
 
       <title>Temper1f Sensor Data</title>
-      
+
       <!-- Mobile Specific Metas -->
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <!-- FONT -->
@@ -15,21 +15,19 @@
    </head>
    <body>
       <div class="container">
-	 <div class="row">
-	    <div class="two-third column" style="margin-top: 10%">
-	       <h1>Real time data</h1>
-	       <h3> Temperature now is {{ temp }}°C</h3>
-	       <h6>Last updated on {{time}}</h6>
-	       <p>This page refreshes every 60 seconds</p>
-	    </div>
-	 </div>
-	 <footer> @2020 Developed by yschung</footer>
-	 <div class="one column">
-	    <a href="/gcharts" style="position:relative;top:15px">Google Charts</a>
-	 </div>
-	 <div class="one column">
-	    <a href="/chartjs" style="position:relative;top:15px">Chartjs</a>
-	 </div>
+         <div class="row">
+            <div class="two-third column" style="margin-top: 10%">
+               <h1>Real time data</h1>
+               <h3> Temperature now is {{ temp }}°C</h3>
+               <h6>Last updated on {{time}}</h6>
+               <p>This page refreshes every 60 seconds</p>
+            </div>
+         </div>
+         <p> @2020 Developed by yschung</p>
+         <div class="row">
+            <a class="button button-primary" href="/gcharts" style="position:relative;top:15px">Google Charts</a>
+            <a class="button button-primary" href="/chartjs" style="position:relative;top:15px">Chartjs</a>
+         </div>
       </div>
    </body>
 </html>
